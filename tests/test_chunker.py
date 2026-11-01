@@ -33,3 +33,16 @@ def test_chunks_bounded_overlapping_and_tagged():
     assert [c.id for c in chunks] == [f"japan#{i}" for i in range(len(chunks))]
     bowing = [c for c in chunks if c.metadata["section"].endswith("Bowing")]
     assert len(bowing) == 1 and "gift" not in bowing[0].text  # no section mixing
+
+
+def test_no_chunk_is_only_the_previous_overlap():
+    """Regression: a paragraph following a split long paragraph used to emit an overlap-only chunk."""
+    long_a = " ".join(f"a{i}" for i in range(600))  # remainder after the first split doesn't fit beside the overlap
+    long_b = " ".join(f"b{i}" for i in range(280))
+    doc = "\n\n".join(["# T", long_a, long_b])  # long_b doesn't fit next to long_a's overlap tail
+    chunks = chunk_markdown("t", doc, {"title": "T"})
+    bodies = [c.text.split("\n\n", 1)[1] for c in chunks]
+    for prev, cur in zip(bodies, bodies[1:]):
+        assert not prev.endswith(cur), "chunk adds no new text"
+    assert len(set(bodies)) == len(bodies)
+    assert all(estimate_tokens(b) <= 400 for b in bodies)

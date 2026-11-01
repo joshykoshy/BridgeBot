@@ -55,27 +55,34 @@ def split_sections(markdown: str) -> list[tuple[list[str], str]]:
 
 
 def _pack(paragraphs: list[str], max_words: int, overlap_words: int) -> list[str]:
-    """Greedily pack paragraphs into windows of <= max_words, carrying an overlap tail."""
-    words_per_para = [p.split() for p in paragraphs if p.strip()]
+    """Greedily pack paragraphs into windows of <= max_words. Each new window starts with the
+    last `overlap_words` of the previous one. A window is only emitted if it contains fresh
+    words, so no chunk is ever just a copy of the previous chunk's tail."""
     windows: list[list[str]] = []
     current: list[str] = []
-    for words in words_per_para:
-        # A single paragraph longer than the window is split by words.
-        while len(words) > max_words:
-            if current:
-                windows.append(current)
-                current = current[-overlap_words:]
+    fresh = 0  # words in `current` that are not carried-over overlap
+
+    def flush() -> None:
+        nonlocal current, fresh
+        if fresh:
+            windows.append(current)
+            current = current[-overlap_words:] if overlap_words else []
+            fresh = 0
+
+    for paragraph in paragraphs:
+        words = paragraph.split()
+        if not words:
+            continue
+        if len(current) + len(words) > max_words:
+            flush()
+        while len(current) + len(words) > max_words:  # paragraph longer than a window
             room = max_words - len(current)
-            current = current + words[:room]
-            words = words[room:]
-            windows.append(current)
-            current = current[-overlap_words:]
-        if len(current) + len(words) > max_words and current:
-            windows.append(current)
-            current = current[-overlap_words:]
-        current = current + words
-    if current and (not windows or current != windows[-1][-len(current):]):
-        windows.append(current)
+            current, words = current + words[:room], words[room:]
+            fresh += room
+            flush()
+        current += words
+        fresh += len(words)
+    flush()
     return [" ".join(w) for w in windows]
 
 
