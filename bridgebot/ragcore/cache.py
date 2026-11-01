@@ -24,6 +24,7 @@ import json
 import re
 import sqlite3
 import time
+from contextlib import closing
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
@@ -55,7 +56,7 @@ class SemanticCache:
         Path(self.db_path).parent.mkdir(parents=True, exist_ok=True)
         self.embed_fn = embed_fn
         self.threshold = threshold
-        with self._conn() as conn:
+        with closing(self._conn()) as conn, conn:
             conn.execute("""CREATE TABLE IF NOT EXISTS semantic_cache (
                 id INTEGER PRIMARY KEY, query TEXT, entities TEXT, corpus_hash TEXT,
                 embedding BLOB, value TEXT, created REAL)""")
@@ -69,7 +70,7 @@ class SemanticCache:
 
     def lookup(self, query: str, entities: list[str], corpus_hash: str) -> CacheResult:
         vec = self._vector(query)
-        with self._conn() as conn:
+        with closing(self._conn()) as conn:
             rows = conn.execute(
                 "SELECT query, embedding, value FROM semantic_cache WHERE entities=? AND corpus_hash=?",
                 (entity_key(entities), corpus_hash)).fetchall()
@@ -84,12 +85,12 @@ class SemanticCache:
         return CacheResult(False, sim)
 
     def store(self, query: str, entities: list[str], corpus_hash: str, value: dict) -> None:
-        with self._conn() as conn:
+        with closing(self._conn()) as conn, conn:
             conn.execute(
                 "INSERT INTO semantic_cache(query, entities, corpus_hash, embedding, value, created) VALUES (?,?,?,?,?,?)",
                 (query, entity_key(entities), corpus_hash, self._vector(query).tobytes(),
                  json.dumps(value, default=str), time.time()))
 
     def clear(self) -> None:
-        with self._conn() as conn:
+        with closing(self._conn()) as conn, conn:
             conn.execute("DELETE FROM semantic_cache")

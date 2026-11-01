@@ -126,7 +126,7 @@ def safety_evals(golden: list[dict]) -> dict:
 def cache_evals() -> dict:
     """Uses a throwaway cache DB so results don't depend on what was asked before."""
     original = ask_mod.get_cache
-    with tempfile.TemporaryDirectory() as tmp:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
         ask_mod.get_cache = lambda: SemanticCache(Path(tmp) / "c.db", embed)  # type: ignore[assignment]
         try:
             first = ask_mod.ask("How should I greet people in Japan?", "eval-cache-1")

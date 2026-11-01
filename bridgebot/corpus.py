@@ -47,6 +47,23 @@ OCCASIONS = ["Ramadan", "Iftar", "Eid al-Fitr", "Eid al-Adha", "Eid", "Diwali", 
              "Day of the Dead", "Vesak", "Songkran", "tea ceremony", "wedding", "funeral", "business meeting",
              "dinner"]
 VOCAB = COUNTRIES + sorted({*DEMONYMS, *RELIGIONS}) + OCCASIONS
+# Several regional articles ("Etiquette in the Middle East") cover countries that have no
+# article of their own, so retrieval and drafting also look for the region name.
+REGIONS = {"Saudi Arabia": "Middle East", "United Arab Emirates": "Middle East", "Egypt": "Middle East",
+           "Turkey": "Middle East", "Israel": "Middle East", "Japan": "Asia", "China": "Asia", "South Korea": "Asia",
+           "India": "Asia", "Indonesia": "Asia", "Thailand": "Asia", "Singapore": "Asia", "Malaysia": "Asia",
+           "Brazil": "Latin America", "Mexico": "Latin America", "Nigeria": "Africa", "South Africa": "Africa",
+           "Germany": "Europe", "France": "Europe", "United Kingdom": "Europe", "United States": "North America",
+           "Canada": "North America", "Australia": "Australia", "New Zealand": "Australia"}
+
+
+def culture_terms(culture: str) -> set[str]:
+    """Lower-case words that signal a passage is about this culture (name, region, demonyms)."""
+    terms = {culture.lower()}
+    if culture in REGIONS:
+        terms.add(REGIONS[culture].lower())
+    terms |= {d for d, c in {**DEMONYMS, **RELIGIONS}.items() if c == culture}
+    return terms
 
 
 def canonical_entities(text: str) -> list[str]:
