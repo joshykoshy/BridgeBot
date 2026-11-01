@@ -70,18 +70,43 @@ def _config(thread_id: str) -> dict:
     return {"configurable": {"thread_id": thread_id}, "recursion_limit": RECURSION_LIMIT}
 
 
-def _run(graph, payload, thread_id: str) -> dict:
-    """Stream node updates until the graph ends or pauses at an interrupt."""
-    updates, pending = [], None
+def stream_run(graph, payload, thread_id: str):
+    """Yield ("update", node, update) after each node, then ("interrupt", value) if the run
+    paused for review. Used by the UI for live node-by-node progress.
+
+    The tracing context is entered around each next() rather than around the whole loop:
+    a web server may resume this generator on a different thread/context after each
+    yield, and a ContextVar must be reset in the context that set it."""
     tracer = trace.Tracer(TRACE_LOG, kind="brief", request_id=thread_id)
-    with trace.tracing(tracer):
-        for chunk in graph.stream(payload, _config(thread_id), stream_mode="updates"):
-            for node, update in chunk.items():
-                if node == "__interrupt__":
-                    pending = update[0].value
-                else:
-                    updates.append({"node": node, "update": update})
+    chunks = graph.stream(payload, _config(thread_id), stream_mode="updates")
+    while True:
+        with trace.tracing(tracer):  # nodes run inside next(), so they see the tracer
+            chunk = next(chunks, None)
+        if chunk is None:
+            return
+        for node, update in chunk.items():
+            if node == "__interrupt__":
+                yield ("interrupt", None, update[0].value)
+            else:
+                yield ("update", node, update)
+
+
+def _run(graph, payload, thread_id: str) -> dict:
+    updates, pending = [], None
+    for kind, node, value in stream_run(graph, payload, thread_id):
+        if kind == "interrupt":
+            pending = value
+        else:
+            updates.append({"node": node, "update": value})
     return {**snapshot(graph, thread_id), "updates": updates, "interrupt": pending}
+
+
+def new_thread_id() -> str:
+    return f"brief-{uuid.uuid4().hex[:10]}"
+
+
+def initial_state(request: str, user_id: str, save_to_playbook: bool) -> dict:
+    return {"request": request, "user_id": user_id, "save_to_playbook": save_to_playbook, "events": []}
 
 
 def snapshot(graph, thread_id: str) -> dict:
@@ -94,9 +119,8 @@ def snapshot(graph, thread_id: str) -> dict:
 
 def start_brief(request: str, user_id: str = "demo", save_to_playbook: bool = False, graph=None) -> dict:
     graph = graph or get_graph()
-    thread_id = f"brief-{uuid.uuid4().hex[:10]}"
-    payload = {"request": request, "user_id": user_id, "save_to_playbook": save_to_playbook, "events": []}
-    return _run(graph, payload, thread_id)
+    thread_id = new_thread_id()
+    return _run(graph, initial_state(request, user_id, save_to_playbook), thread_id)
 
 
 def get_brief(thread_id: str, graph=None) -> dict:
