@@ -3,6 +3,10 @@
 Run once with internet: `python scripts/download_models.py`. Models land in the normal
 Hugging Face cache (~/.cache/huggingface), about 220 MB in total.
 """
+import os
+
+os.environ["HF_HUB_OFFLINE"] = "0"  # this script is the one place allowed to download
+
 from sentence_transformers import CrossEncoder, SentenceTransformer
 
 EMBED_MODEL = "BAAI/bge-small-en-v1.5"
