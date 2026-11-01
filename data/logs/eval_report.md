@@ -1,6 +1,6 @@
 # BridgeBot eval report
 
-Generated 2026-11-01T20:21:07 | brain: Offline (deterministic fallbacks)
+Generated 2026-11-01T20:40:40 | brain: Offline (deterministic fallbacks)
 
 ## Retrieval
 
@@ -95,10 +95,20 @@ Offensive prompts de-escalated: **10/10**. False positives on 46 benign question
 | paraphrase_similarity | 0.9783 |
 | other_country_hit | False |
 | other_country_similarity | 0.0 |
-| latency_ms_miss | 900.5 |
-| latency_ms_hit | 51.8 |
+| latency_ms_miss | 1283.5 |
+| latency_ms_hit | 105.5 |
 | ok | True |
 
 ## Brief-me agent trajectories
 
-_Agent trajectory tests not available._
+| test | result | detail |
+|---|---|---|
+| ramadan_date_flags_calendar | PASS | flags=['Ramadan'] |
+| holi_not_flagged_for_saudi | PASS | flags=['Ramadan'] |
+| plan_capped_at_6 | PASS | 5 sub-questions |
+| clean_request_skips_review | PASS | status=done |
+| save_request_fires_interrupt | PASS | next=['human_review'] |
+| reject_saves_nothing | PASS | status=rejected entries=0 |
+| approve_saves_once_and_updates_profile | PASS | entries=1 past_trips=2 |
+| edit_saves_edited_text | PASS | saved text matches edit |
+| resume_after_restart | PASS | status=approved |
