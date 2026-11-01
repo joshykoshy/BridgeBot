@@ -26,3 +26,11 @@ flagged/
 .idea/
 .DS_Store
 Thumbs.db
+
+# v2 runtime artefacts (rebuilt automatically)
+data/index/
+data/logs/
+data/state.db
+data/cache.db
+data/checkpoints.db*
+.pytest_cache/
