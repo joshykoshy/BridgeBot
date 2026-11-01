@@ -1,12 +1,20 @@
-﻿langchain>=0.3.0
-langchain-core>=0.3.0
-langchain-community>=0.3.0
-langchain-openai>=0.2.0
-langchain-huggingface>=0.1.0
-sentence-transformers>=3.4.0
-transformers>=4.41.0
-openai>=1.3.0
-gradio>=5.0.0
-python-dotenv>=1.0.0
-beautifulsoup4>=4.12.0
-torch>=2.0.0
+# torch: install the CPU wheel first:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+sentence-transformers>=3.0
+chromadb>=0.5
+rank-bm25>=0.2.2
+sqlglot>=25.0
+pydantic>=2.6
+python-dotenv>=1.0
+openai>=1.40
+anthropic>=0.40
+langgraph>=0.2.60
+langgraph-checkpoint-sqlite>=2.0
+fastapi>=0.110
+uvicorn>=0.29
+gradio>=5.0
+requests>=2.31
+beautifulsoup4>=4.12
+markdownify>=0.12
+holidays>=0.60
+pytest>=8.0

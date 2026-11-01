@@ -1,0 +1,26 @@
+---
+title: Customs and etiquette in Indian dining
+source_url: https://en.wikipedia.org/wiki/Customs_and_etiquette_in_Indian_dining
+retrieved_at: 2026-11-01
+country: India
+religion: 
+topic: etiquette
+license: CC BY-SA 4.0 (Wikipedia)
+---
+# Customs and etiquette in Indian dining
+
+The etiquette of Indian dining and socializing varies with the region in India. Most Indians wash their hands thoroughly prior to dining, then eat with their hands, with the use of minimal cutlery (practice followed in some parts of India, in other parts cutlery use is common). This practice is historic and premised on the cultural premise that eating is a sensory activity, and touch is part of the experience along with the taste, aroma of the food, and its presentation such as on a thali, or on a large plate made from washed banana leaf (used in south), or stitched and washed siali (used in the north)  leaves. Traditionally, the fingers are also used to feel the temperature of the food to one's taste and to combine flavors.
+When eating rice, it is mixed with curry, picking up small quantities with the fingers and pushing it into the mouth with the thumb. When eating bread, small portions (roti, naan) are folded into a small pocket to scoop the desired amount of curry. Most food is prepared to be bite-sized, but when large items such as a chicken leg are served, it is acceptable to eat with one's hand.
+Traditionally, sitting down together on floor mats in comfortable clothes is the norm. In restaurants and hotel settings, tables and chairs are typically used these days. Modern, upper-middle-class homes also do the same.
+
+In many areas, when eating with the help of one's fingers, only one hand is used for eating (the dominant hand), and the other remains dry and only used to pass dishes or to serve or drink water. In many cases, strict vegetarian and non-vegetarian people eat together, but the etiquette is not to mix cooking or serving utensils between the foods, to respect the spiritual beliefs of non-violence to animals prevalent among the strict vegetarians.
+Similarly, cleanliness and hygiene are important. While cooking, the cook does not taste food and uses the same utensil to stir the food. Once the food is tasted with a utensil, it is put away to be washed. Food which has been dipped with fingers and cutlery used for eating is considered jootha or Uchchhishta (contaminated). The precept of not contaminating all the food or a drink with bacteria or viruses in one's saliva is of particular concern as the health of someone could be threatened through cross-contamination.
+Indian food incorporates numerous whole and powdered spices sourced from various roots, barks, seeds, and leaves. Whole spices such as cloves, bay leaves or cinnamon sticks are not to be eaten as part of culturally accepted dining practice, just separated and set aside by the diner usually on their plate.
+Eating is usually with family and friends, with the homemaker keeping an eye on the table, bringing and offering more food. However, naan is not generally shared amongst diners. In larger group meals or celebrations, volunteers or attendants may not eat with the group, and dedicate themselves to bringing meal courses, feeding and serving the group. Asking for more and helping oneself to items is accepted and cheered. Special requests such as less or more heat, yogurt, and other items are usually welcomed. Sometimes the group may eat silently, but asking questions to a loved one, catching up about one's day or discussing various topics of society and life and conversations in general is encouraged.
+Regionally, the tradition varies from not wasting food on one's plate, to only eating what one feels like and leaving the rest. However, in some regions, leaving food as an offering is common; some consider this as a method of only wishing to consume pure spirits of the food and the discarded food will represent the evil spirits of the past. Washing one's hands after the meal and drying them with a provided towel is a norm.
+
+## Meal structure
+
+For many communities, Ayurvedic beliefs and customs influenced their meal structures and practice. The typical injunction is to "Breakfast moderately, lunch well and eat dinner very sparingly".
+Ayurveda states that each day is divided into 4-hour dayparts. Each of these dayparts is connected to the slow rise, peaking, and then falling of a particular dosha in the body. The strength of the surge in the dosha depends upon the movement of the Sun. Ideally, the correct time for one's heaviest meal should be at noon, because that is when Pitta dosha (which helps cover various digestive activities, e.g. kindling an appetite, producing saliva and gastric enzymes, digesting and absorbing nutrients, and separating the food into useful and non-useful by-products that eventually leave the body), which is strongly influenced by the Sun, as agni (fire) is one of the two pancha mahabhutas that make up the pitta dosha, reaches its peak.
+Therefore, traditionally for most of these communities, lunch was the main meal of the day. Dinner is traditionally light and low on starches, dairy, etc. because foods high in glycemic index tend to cause an imbalance in the kapha dosha, as per Ayurveda.
