@@ -121,7 +121,8 @@ def _flags_md(flags: list[dict]) -> str:
 
 
 def _sources_md(sources: list[dict]) -> str:
-    return "\n".join(f"{s['n']}. [{s['title']}]({s['url']}) `{s['id']}`" for s in sources or [])
+    return "\n".join(f"{s['n']}. " + (f"[{s['title']}]({s['url']})" if s["url"].startswith("http") else
+                                      f"{s['title']} ({s['url']})") + f" `{s['id']}`" for s in sources or [])
 
 
 def _brief_outputs(thread_id: str, updates: list, pending):
