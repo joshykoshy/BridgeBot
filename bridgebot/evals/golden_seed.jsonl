@@ -1,0 +1,46 @@
+{"id": "ex01", "type": "exact_name", "question": "What is otoshidama?", "pattern": "Monetary gifts called otoshidama", "docs": ["red-envelope"]}
+{"id": "ex02", "type": "exact_name", "question": "What is omiyage?", "pattern": "Omiyage \\(", "docs": ["omiyage"]}
+{"id": "ex03", "type": "exact_name", "question": "What is sebae on Seollal?", "pattern": "Sebae \\(Korean", "docs": ["seollal"]}
+{"id": "ex04", "type": "exact_name", "question": "What is the langar in a gurdwara?", "pattern": "community kitchen called a langar|have a langar hall", "docs": ["gurdwara"]}
+{"id": "ex05", "type": "exact_name", "question": "What does guanxi mean?", "pattern": "romanization guanxi is more widely used", "docs": ["guanxi"]}
+{"id": "ex06", "type": "exact_name", "question": "What is mianzi in Chinese culture?", "pattern": "concepts of mianzi, lian and yan", "docs": ["face-sociological-concept"]}
+{"id": "ex07", "type": "exact_name", "question": "What does the Japanese honorific san mean?", "pattern": "is the most commonplace honorific", "docs": ["japanese-honorifics"]}
+{"id": "ex08", "type": "exact_name", "question": "What is chametz?", "pattern": "leavened foods \\(chametz\\)|known as chametz", "docs": ["passover", "kashrut"]}
+{"id": "ex09", "type": "exact_name", "question": "What is an ofrenda?", "pattern": "home altars called ofrendas|build private altars", "docs": ["day-of-the-dead"]}
+{"id": "ex10", "type": "exact_name", "question": "What is zakat al-Fitr?", "pattern": "\\(zakat al-Fitr\\) before", "docs": ["eid-al-fitr"]}
+{"id": "ex11", "type": "exact_name", "question": "What is songpyeon?", "pattern": "is songpyeon", "docs": ["chuseok"]}
+{"id": "ex12", "type": "exact_name", "question": "Where does the wai gesture come from?", "pattern": "wai gesture originated in Buddhism", "docs": ["wai-gesture"]}
+{"id": "pa01", "type": "paraphrase", "question": "Which presents should I avoid at a wedding in Japan?", "pattern": "mirrors and ceramic wares", "docs": ["etiquette-in-japan"]}
+{"id": "pa02", "type": "paraphrase", "question": "Why shouldn't I give a Korean colleague a set of four items?", "pattern": "gifts should not be given in multiples of 4|Using the number four is considered unlucky", "docs": ["etiquette-in-asia", "etiquette-in-south-korea"]}
+{"id": "pa03", "type": "paraphrase", "question": "How do Muslims usually break their fast in the evening?", "pattern": "iftar consists of water, juices, dates|Iftar begins by eating dates", "docs": ["ramadan", "iftar"]}
+{"id": "pa04", "type": "paraphrase", "question": "Can I order pork or alcohol at a work dinner with Indonesian colleagues?", "pattern": "prohibits the consumption of pork and alcohol", "docs": ["etiquette-in-indonesia"]}
+{"id": "pa05", "type": "paraphrase", "question": "Can I serve a cheeseburger to guests who keep kosher?", "pattern": "Meat and milk \\(or derivatives\\) may not be mixed", "docs": ["kashrut"]}
+{"id": "pa06", "type": "paraphrase", "question": "How should I accept a business card from a Japanese client?", "pattern": "by the bottom two corners using both hands", "docs": ["business-card"]}
+{"id": "pa07", "type": "paraphrase", "question": "What should a woman wear to visit a mosque in Indonesia?", "pattern": "women are also required to cover their heads", "docs": ["etiquette-in-indonesia"]}
+{"id": "pa08", "type": "paraphrase", "question": "Do waiters in Australia expect a tip?", "pattern": "Tipping is not expected and some employees", "docs": ["etiquette-in-australia-and-new-zealand"]}
+{"id": "pa09", "type": "paraphrase", "question": "Should I leave a tip in Brazil?", "pattern": "Tipping is not common in Brazil", "docs": ["etiquette-in-latin-america"]}
+{"id": "pa10", "type": "paraphrase", "question": "What lights do people use to decorate homes for the festival of lights?", "pattern": "diyas \\(oil lamps\\)", "docs": ["diwali"]}
+{"id": "pa11", "type": "paraphrase", "question": "What do people throw at each other during Holi?", "pattern": "natural coloured powders, called gulal", "docs": ["holi"]}
+{"id": "pa12", "type": "paraphrase", "question": "How long is the Jewish festival of lights and what is lit each night?", "pattern": "Hanukkah lasts for eight nights", "docs": ["hanukkah"]}
+{"id": "pa13", "type": "paraphrase", "question": "How long before sunset are the Friday evening candles lit?", "pattern": "18 minutes before sundown", "docs": ["shabbat"]}
+{"id": "pa14", "type": "paraphrase", "question": "How is the meat shared after the sacrifice at the Feast of the Sacrifice?", "pattern": "sharing the meat in three equal parts", "docs": ["eid-al-adha"]}
+{"id": "pa15", "type": "paraphrase", "question": "Why is a clock a bad present in Japan?", "pattern": "Clocks and other timepieces are also avoided", "docs": ["etiquette-in-japan"]}
+{"id": "pa16", "type": "paraphrase", "question": "Which flowers are reserved for funerals in Italy?", "pattern": "chrysanthemums are given only at funerals", "docs": ["etiquette-in-europe"]}
+{"id": "pa17", "type": "paraphrase", "question": "Instead of shaking hands, how do people traditionally greet in India?", "pattern": "respectful Namaste gesture, sometimes combined with a slight bow", "docs": ["handshake"]}
+{"id": "pa18", "type": "paraphrase", "question": "Which snack do people give each other at the Moon Festival?", "pattern": "giving mooncakes to each other", "docs": ["mid-autumn-festival"]}
+{"id": "fu01", "type": "follow_up", "history": [{"role": "user", "content": "I'm visiting a host family in Japan next week."}, {"role": "assistant", "content": "That's exciting. Being invited into someone's home is an honour."}], "question": "Which gifts should I avoid bringing?", "pattern": "Clocks and other timepieces are also avoided|mirrors and ceramic wares", "docs": ["etiquette-in-japan"]}
+{"id": "fu02", "type": "follow_up", "history": [{"role": "user", "content": "Tell me about Chuseok."}, {"role": "assistant", "content": "Chuseok is a major Korean harvest festival."}], "question": "What food is eaten during it?", "pattern": "is songpyeon", "docs": ["chuseok"]}
+{"id": "fu03", "type": "follow_up", "history": [{"role": "user", "content": "What is Passover?"}, {"role": "assistant", "content": "Passover is a major Jewish holiday commemorating the Exodus."}], "question": "Which foods are forbidden during it?", "pattern": "forbidden from possessing or eating leavened foods|prohibition on eating leavened bread", "docs": ["passover", "kashrut"]}
+{"id": "fu04", "type": "follow_up", "history": [{"role": "user", "content": "What is Ramadan?"}, {"role": "assistant", "content": "Ramadan is the Islamic month of fasting."}], "question": "How do people break the fast each evening?", "pattern": "iftar consists of water, juices, dates|Iftar begins by eating dates", "docs": ["ramadan", "iftar"]}
+{"id": "fu05", "type": "follow_up", "history": [{"role": "user", "content": "I've been invited to a Diwali party."}, {"role": "assistant", "content": "Lovely, Diwali is the festival of lights."}], "question": "How do people decorate their homes for it?", "pattern": "diyas \\(oil lamps\\) and rangolis", "docs": ["diwali"]}
+{"id": "fu06", "type": "follow_up", "history": [{"role": "user", "content": "What is Hanukkah?"}, {"role": "assistant", "content": "Hanukkah is a Jewish festival commemorating the rededication of the Second Temple."}], "question": "How many nights does it last?", "pattern": "Hanukkah lasts for eight nights", "docs": ["hanukkah"]}
+{"id": "fu07", "type": "follow_up", "history": [{"role": "user", "content": "I'm meeting business partners from South Korea."}, {"role": "assistant", "content": "Happy to help you prepare."}], "question": "Is there a number I should avoid when giving gifts?", "pattern": "gifts should not be given in multiples of 4|Using the number four is considered unlucky", "docs": ["etiquette-in-asia", "etiquette-in-south-korea"]}
+{"id": "fu08", "type": "follow_up", "history": [{"role": "user", "content": "What is the Day of the Dead?"}, {"role": "assistant", "content": "It is a Mexican holiday honouring deceased relatives."}], "question": "What do families build at home for it?", "pattern": "home altars called ofrendas|build private altars", "docs": ["day-of-the-dead"]}
+{"id": "un01", "type": "unanswerable", "question": "How do I fix my car engine when it overheats?"}
+{"id": "un02", "type": "unanswerable", "question": "What was the GDP of Peru in 2025?"}
+{"id": "un03", "type": "unanswerable", "question": "Which laptop should I buy for programming?"}
+{"id": "un04", "type": "unanswerable", "question": "Who won the 2022 football World Cup final?"}
+{"id": "un05", "type": "unanswerable", "question": "What is the corporate tax rate in Germany?"}
+{"id": "un06", "type": "unanswerable", "question": "How do I reset my wifi router password?"}
+{"id": "un07", "type": "unanswerable", "question": "What is the boiling point of mercury?"}
+{"id": "un08", "type": "unanswerable", "question": "Write a Python function that sorts a list."}

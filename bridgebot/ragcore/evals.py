@@ -1,11 +1,14 @@
 """Retrieval evaluation: Recall@k, MRR, nDCG@5 over a golden set, across pipeline configs.
 
 Concept: you can't improve what you don't measure. A golden set maps each question to the
-chunk ids that answer it. For each pipeline configuration we retrieve the top 5 and compute:
-  * Recall@k: share of the relevant chunks that appear in the top k (k = 1, 3, 5).
-  * MRR: 1 / rank of the first relevant chunk (0 if none in top 5). Rewards ranking the
-    right chunk first, which matters because the answer model reads top passages hardest.
-  * nDCG@5: graded ranking quality with a log discount; binary relevance here.
+chunk ids that contain its answer. Because chunks overlap, the same answer sentence can sit
+in two neighbouring chunks; any one of them answers the question. So metrics are computed
+at the *answer* level (standard top-k retrieval accuracy for single-answer QA):
+  * Recall@k: 1 if any answer-bearing chunk is in the top k, else 0; averaged over
+    questions (k = 1, 3, 5).
+  * MRR: 1 / rank of the first answer-bearing chunk (0 if none in the top 5). Rewards
+    putting the answer first, which matters because models attend most to top passages.
+  * nDCG@5: log-discounted gain of the first answer-bearing chunk (ideal = rank 1).
 
 Questions of type "unanswerable" have no relevant chunks; they are excluded from these
 metrics and used for abstain accuracy instead.
@@ -26,9 +29,7 @@ KS = (1, 3, 5)
 
 
 def recall_at_k(retrieved: list[str], relevant: set[str], k: int) -> float:
-    if not relevant:
-        return 0.0
-    return len(set(retrieved[:k]) & relevant) / len(relevant)
+    return 1.0 if relevant & set(retrieved[:k]) else 0.0
 
 
 def mrr(retrieved: list[str], relevant: set[str]) -> float:
@@ -39,9 +40,10 @@ def mrr(retrieved: list[str], relevant: set[str]) -> float:
 
 
 def ndcg_at_k(retrieved: list[str], relevant: set[str], k: int = 5) -> float:
-    dcg = sum(1.0 / math.log2(rank + 1) for rank, d in enumerate(retrieved[:k], start=1) if d in relevant)
-    ideal = sum(1.0 / math.log2(rank + 1) for rank in range(1, min(len(relevant), k) + 1))
-    return dcg / ideal if ideal else 0.0
+    for rank, doc_id in enumerate(retrieved[:k], start=1):
+        if doc_id in relevant:
+            return 1.0 / math.log2(rank + 1)  # ideal DCG = 1/log2(2) = 1
+    return 0.0
 
 
 def load_golden(path: str | Path) -> list[dict]:

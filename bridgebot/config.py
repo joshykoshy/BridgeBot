@@ -13,6 +13,6 @@ CHECKPOINT_DB = DATA / "checkpoints.db"  # LangGraph checkpointer
 TRACE_LOG = LOG_DIR / "trace.jsonl"
 ASK_LOG = LOG_DIR / "ask_log.jsonl"
 
-ABSTAIN_THRESHOLD = 0.05  # reranker probability below which we say "my sources don't cover this"; tuned in evals
+ABSTAIN_THRESHOLD = 0.01  # reranker probability below which we abstain; picked by the sweep in the eval report
 CACHE_THRESHOLD = 0.92
 HISTORY_TURNS = 6

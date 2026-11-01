@@ -29,7 +29,8 @@ Thumbs.db
 
 # v2 runtime artefacts (rebuilt automatically)
 data/index/
-data/logs/
+data/logs/*
+!data/logs/eval_report.md
 data/state.db
 data/cache.db
 data/checkpoints.db*

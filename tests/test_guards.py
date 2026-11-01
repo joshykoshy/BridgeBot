@@ -26,3 +26,10 @@ def test_citation_check():
     bad = "Bowing is the usual greeting in Japan [7]. Gifts are given with both hands in most places."
     rep = citation_check(bad, 2)
     assert not rep.ok and rep.invalid == [7] and rep.uncited_sentences
+
+
+def test_citation_after_full_stop_counts():
+    """Regression: '... claim. [1]' used to split the [1] off as its own sentence."""
+    answer = "Bowing is the usual greeting in Japan. [1] Gifts are given and received with both hands. [2, 1]"
+    rep = citation_check(answer, 2)
+    assert rep.ok and rep.coverage == 1.0 and not rep.uncited_sentences

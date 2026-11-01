@@ -97,7 +97,9 @@ def extractive_answer(question: str, result: RetrievalResult, max_points: int = 
     each with its citation number. Grounded and cited by construction."""
     q_terms = set(tokenize(question))
     points: list[str] = []
-    for p in result.passages[:max_points]:
+    top = result.passages[0].score if result.passages else 0.0
+    relevant = [p for p in result.passages if p.score >= 0.5 * top]  # drop weak tail passages
+    for p in relevant[:max_points]:
         body = p.text.split("\n\n", 1)[-1]
         sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", body) if 8 <= len(s.split()) <= 60]
         if not sentences:

@@ -86,12 +86,12 @@ GROUP_TERMS = (
 INSULTS = (
     r"stupid|dumb|idiots?|inferior|savages?|primitive|backwards?|barbaric|barbarians?|dirty|filthy|"
     r"disgusting|terrorists?|criminals?|animals|vermin|subhuman|lazy|thieves|evil|worthless|"
-    r"uncivili[sz]ed|retarded"
+    r"uncivili[sz]ed|retarded|rude|greedy|arrogant|ignorant|brainwashed|fanatics?|parasites?"
 )
 TOXIC_PATTERNS = [
     rf"\b(all|most|every|those|these)\s+({GROUP_TERMS})\s+(are|is)\s+(\w+\s+)?({INSULTS})\b",
-    rf"\b({GROUP_TERMS})\s+(are|is)\s+(all\s+|so\s+|just\s+)?({INSULTS})\b",
-    rf"\bwhy (are|do) ({GROUP_TERMS})\s+(so\s+)?({INSULTS})\b",
+    rf"\b({GROUP_TERMS})\s+(are|is)\s+(all\s+|so\s+|just\s+|such\s+)?(\w+\s+(and\s+)?)?({INSULTS})\b",
+    rf"\bwhy (are|do) ({GROUP_TERMS})\s+(so\s+|always\s+)?({INSULTS}|hate|smell|steal|lie|cheat)\b",
     rf"\b({INSULTS})\s+({GROUP_TERMS})\b",
     r"\b(kill|exterminate|deport|ban) (all )?(the )?(" + GROUP_TERMS + r")\b",
     r"\b(religion|culture|tradition)s? (is|are) (for )?(stupid|idiots|garbage|trash|nonsense|barbaric|primitive)\b",
@@ -124,7 +124,8 @@ def check_toxicity(text: str, use_moderation_api: bool = True) -> ToxicityResult
 
 # --- Citations -------------------------------------------------------------------------------
 CITE_RE = re.compile(r"\[(\d+(?:\s*,\s*\d+)*)\]")
-SENTENCE_RE = re.compile(r"(?<=[.!?])\s+(?=[A-Z\"'(\[*])")
+SENTENCE_RE = re.compile(r"(?<=[.!?])\s+(?=[A-Z\"'(*])")
+CITE_ONLY_RE = re.compile(r"^(\[\d+(?:\s*,\s*\d+)*\]\s*)+[.!?]?$")
 
 
 @dataclass
@@ -142,7 +143,11 @@ def split_sentences(text: str) -> list[str]:
     for ln in lines:
         if not ln or ln.startswith("#") or ln.endswith(":"):
             continue
-        out.extend(s.strip() for s in SENTENCE_RE.split(ln) if s.strip())
+        for piece in (p.strip() for p in SENTENCE_RE.split(ln) if p.strip()):
+            if out and CITE_ONLY_RE.match(piece):  # "... claim. [2]" -> citation belongs to the claim
+                out[-1] = f"{out[-1]} {piece}"
+            else:
+                out.append(piece)
     return out
 
 
