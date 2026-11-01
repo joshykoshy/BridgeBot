@@ -117,7 +117,7 @@ copy .env.example .env            # then paste OPENAI_API_KEY (optional; works o
 ```
 
 **Provider switch:** `LLM_PROVIDER=openai` (default: `gpt-4o-mini` fast, `gpt-4o` smart) or
-`LLM_PROVIDER=anthropic` (`claude-haiku-5-5` fast, `claude-opus-5-5` smart). **Offline:** no key,
+`LLM_PROVIDER=anthropic` (`claude-haiku-5-5` fast, `claude-opus-5-5` smart), or `LLM_PROVIDER=gemini` with `GEMINI_API_KEY` (default `gemini-3.8-flash` for both tiers, via Google's OpenAI-compatible endpoint). **Offline:** no key,
 or `OFFLINE=1`. Every LLM step then uses a deterministic fallback, and the UI badge says
 "Offline".
 

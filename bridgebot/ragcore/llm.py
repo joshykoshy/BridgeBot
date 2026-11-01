@@ -1,4 +1,4 @@
-"""One small LLM wrapper: provider switch (OpenAI / Anthropic), two model tiers, structured
+"""One small LLM wrapper: provider switch (OpenAI / Anthropic / Gemini), two model tiers, structured
 outputs, and an explicit offline mode.
 
 Concept:
@@ -13,9 +13,12 @@ Concept:
     runtime raise LLMError, which callers also treat as "use the fallback".
 
 Config (environment / .env):
-  LLM_PROVIDER=openai|anthropic
+  LLM_PROVIDER=openai|anthropic|gemini
   LLM_FAST_MODEL / LLM_SMART_MODEL            (OpenAI, default gpt-4o-mini / gpt-4o)
   ANTHROPIC_FAST_MODEL / ANTHROPIC_SMART_MODEL (default claude-haiku-5-5 / claude-opus-5-5)
+  GEMINI_FAST_MODEL / GEMINI_SMART_MODEL       (default gemini-3.8-flash for both; key GEMINI_API_KEY)
+Gemini is called through Google's OpenAI-compatible endpoint, so it shares the OpenAI code
+path (including structured outputs via `parse`); only the base URL and key differ.
 
 Trade-off: a thin hand-written wrapper instead of LangChain's chat models keeps every line
 explainable and avoids version churn, at the cost of re-implementing the two calls we need.
@@ -39,10 +42,13 @@ Tier = Literal["fast", "smart"]
 DEFAULTS = {
     "openai": {"fast": "gpt-4o-mini", "smart": "gpt-4o"},
     "anthropic": {"fast": "claude-haiku-5-5", "smart": "claude-opus-5-5"},
+    "gemini": {"fast": "gemini-3.8-flash", "smart": "gemini-3.8-flash"},
 }
+GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 ENV_KEYS = {
     "openai": {"fast": "LLM_FAST_MODEL", "smart": "LLM_SMART_MODEL", "key": "OPENAI_API_KEY"},
     "anthropic": {"fast": "ANTHROPIC_FAST_MODEL", "smart": "ANTHROPIC_SMART_MODEL", "key": "ANTHROPIC_API_KEY"},
+    "gemini": {"fast": "GEMINI_FAST_MODEL", "smart": "GEMINI_SMART_MODEL", "key": "GEMINI_API_KEY"},
 }
 
 
@@ -75,13 +81,23 @@ def badge() -> str:
     return f"{provider()}: {model_for('smart')} / {model_for('fast')}"
 
 
-@lru_cache(maxsize=2)
+@lru_cache(maxsize=3)
 def _client(name: str):
     if name == "anthropic":
         import anthropic
         return anthropic.Anthropic()
     import openai
+    if name == "gemini":
+        return openai.OpenAI(api_key=os.getenv("GEMINI_API_KEY"), base_url=GEMINI_BASE_URL)
     return openai.OpenAI()
+
+
+def _openai_style_kwargs(max_tokens: int) -> dict:
+    """Gemini models think before answering and thinking counts against the output budget,
+    so ask for low reasoning effort and leave enough room for the answer."""
+    if provider() == "gemini":
+        return {"max_tokens": max(max_tokens, 4096), "reasoning_effort": "low"}
+    return {"max_tokens": max_tokens}
 
 
 def complete(system: str, user: str, tier: Tier = "smart", max_tokens: int = 1500,
@@ -99,8 +115,8 @@ def complete(system: str, user: str, tier: Tier = "smart", max_tokens: int = 150
                 raise LLMError("model refused")
             trace.add_tokens(resp.usage.input_tokens + resp.usage.output_tokens)
             return "".join(b.text for b in resp.content if b.type == "text").strip()
-        resp = _client("openai").chat.completions.create(
-            model=model_for(tier), max_tokens=max_tokens, temperature=temperature,
+        resp = _client(provider()).chat.completions.create(
+            model=model_for(tier), temperature=temperature, **_openai_style_kwargs(max_tokens),
             messages=[{"role": "system", "content": system}, {"role": "user", "content": user}])
         trace.add_tokens(resp.usage.total_tokens if resp.usage else 0)
         return (resp.choices[0].message.content or "").strip()
@@ -119,9 +135,9 @@ def _structured_once(system: str, user: str, schema: type[T], tier: Tier, max_to
         if resp.parsed_output is None:
             raise _InvalidOutput("no parsed output")
         return resp.parsed_output
-    client = _client("openai")
+    client = _client(provider())
     parse = getattr(client.chat.completions, "parse", None) or client.beta.chat.completions.parse
-    resp = parse(model=model_for(tier), max_tokens=max_tokens, temperature=0, response_format=schema,
+    resp = parse(model=model_for(tier), temperature=0, response_format=schema, **_openai_style_kwargs(max_tokens),
                  messages=[{"role": "system", "content": system}, {"role": "user", "content": user}])
     trace.add_tokens(resp.usage.total_tokens if resp.usage else 0)
     parsed = resp.choices[0].message.parsed
